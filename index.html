@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>小众乐器教学</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -61,23 +62,31 @@
             <div class="page-content">
                 <div class="user-info">
                     <div class="avatar-container">
-                        <img id="user-avatar" src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=user%20avatar%20musician%20profile%20picture&image_size=square" alt="头像">
-                        <button id="edit-avatar-btn" class="edit-btn">编辑</button>
+                        <div class="avatar-wrapper">
+                            <img id="user-avatar" src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=user%20avatar%20musician%20profile%20picture&image_size=square" alt="头像">
+                            <button id="edit-avatar-btn" class="edit-icon-btn">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="username-container">
-                        <span id="user-username">音乐爱好者</span>
-                        <button id="edit-username-btn" class="edit-btn">编辑</button>
+                        <div class="username-wrapper">
+                            <span id="user-username">音乐爱好者</span>
+                            <button id="edit-username-btn" class="edit-icon-btn">
+                                <i class="fas fa-pen"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
                 <div class="menu-section">
                     <div class="menu-item" id="menu-sheet">
-                        <span>乐谱下载</span>
-                        <span class="arrow">›</span>
+                        <span><i class="fas fa-music"></i> 乐谱下载</span>
+                        <span class="arrow"><i class="fas fa-chevron-right"></i></span>
                     </div>
                     <div class="menu-item" id="menu-settings">
-                        <span>设置</span>
-                        <span class="arrow">›</span>
+                        <span><i class="fas fa-cog"></i> 设置</span>
+                        <span class="arrow"><i class="fas fa-chevron-right"></i></span>
                     </div>
                 </div>
             </div>
@@ -86,19 +95,19 @@
         <!-- 底部导航栏 -->
         <nav class="bottom-nav">
             <button class="nav-item active" data-page="home">
-                <span class="nav-icon">🏠</span>
+                <span class="nav-icon"><i class="fas fa-home"></i></span>
                 <span class="nav-label">首页</span>
             </button>
             <button class="nav-item" data-page="courses">
-                <span class="nav-icon">📚</span>
+                <span class="nav-icon"><i class="fas fa-book-open"></i></span>
                 <span class="nav-label">课程</span>
             </button>
             <button class="nav-item" data-page="checkin">
-                <span class="nav-icon">✅</span>
+                <span class="nav-icon"><i class="fas fa-check-circle"></i></span>
                 <span class="nav-label">打卡</span>
             </button>
             <button class="nav-item" data-page="profile">
-                <span class="nav-icon">👤</span>
+                <span class="nav-icon"><i class="fas fa-user"></i></span>
                 <span class="nav-label">我的</span>
             </button>
         </nav>
@@ -160,7 +169,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h2>编辑用户名</h2>
-                    <button id="close-username-modal" class="close-btn">&times;</button>
+                    <button id="close-username-modal" class="close-btn"><i class="fas fa-times"></i></button>
                 </div>
                 <div class="modal-body">
                     <input type="text" id="new-username-input" placeholder="请输入新用户名">
@@ -168,7 +177,35 @@
                 </div>
             </div>
         </div>
+
+        <!-- 视频播放弹窗 -->
+        <div id="video-modal" class="modal">
+            <div class="modal-content video-modal-content">
+                <div class="modal-header">
+                    <h2 id="modal-video-title">视频播放</h2>
+                    <button id="close-video-modal" class="close-btn"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="modal-body">
+                    <div class="video-container">
+                        <video id="video-player" controls>
+                            <source src="" type="video/mp4">
+                            您的浏览器不支持视频播放。
+                        </video>
+                        <div class="video-placeholder">
+                            <div class="video-placeholder-content">
+                                <i class="fas fa-play-circle"></i>
+                                <p>视频播放功能演示</p>
+                                <p id="placeholder-video-title"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Toast 提示容器 -->
+    <div id="toast-container" class="toast-container"></div>
 
     <script src="js/app.js"></script>
 </body>
