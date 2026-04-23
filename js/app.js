@@ -933,7 +933,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (e.key === 'Enter') {
                 saveUsername();
             }
-        };
+        });
     }
 
     // 初始化应用
