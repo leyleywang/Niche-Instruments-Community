@@ -1,4 +1,29 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Toast 提示函数
+    function showToast(message, type = 'info') {
+        const toastContainer = document.getElementById('toast-container');
+        if (!toastContainer) return;
+
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.textContent = message;
+
+        toastContainer.appendChild(toast);
+
+        // 触发动画
+        setTimeout(() => {
+            toast.classList.add('show');
+        }, 10);
+
+        // 自动消失
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                toastContainer.removeChild(toast);
+            }, 300);
+        }, 2000);
+    }
+
     // 数据定义
     const teachers = [
         {
@@ -8,9 +33,9 @@ document.addEventListener('DOMContentLoaded', function() {
             instruments: ['陶笛', '口琴'],
             bio: '从事小众乐器教学10年，擅长陶笛演奏与教学，曾获全国陶笛大赛金奖。教学风格温和耐心，深受学员喜爱。',
             videos: [
-                { title: '陶笛入门基础', duration: '15:30', thumbnail: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=ocarina%20music%20lesson%20video%20thumbnail&image_size=landscape_4_3' },
-                { title: '天空之城陶笛版', duration: '10:20', thumbnail: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=music%20performance%20video%20thumbnail%20instrument&image_size=landscape_4_3' },
-                { title: '陶笛吹奏技巧', duration: '20:15', thumbnail: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=musical%20instrument%20tutorial%20video%20thumbnail&image_size=landscape_4_3' }
+                { id: 1, title: '陶笛入门基础', duration: '15:30', thumbnail: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=ocarina%20music%20lesson%20video%20thumbnail&image_size=landscape_4_3' },
+                { id: 2, title: '天空之城陶笛版', duration: '10:20', thumbnail: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=music%20performance%20video%20thumbnail%20instrument&image_size=landscape_4_3' },
+                { id: 3, title: '陶笛吹奏技巧', duration: '20:15', thumbnail: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=musical%20instrument%20tutorial%20video%20thumbnail&image_size=landscape_4_3' }
             ]
         },
         {
@@ -20,8 +45,8 @@ document.addEventListener('DOMContentLoaded', function() {
             instruments: ['尤克里里', '拇指琴'],
             bio: '5年尤克里里教学经验，擅长流行曲目改编。教学风格活泼有趣，让学员在轻松愉快的氛围中学习。',
             videos: [
-                { title: '尤克里里入门教程', duration: '12:45', thumbnail: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=ukulele%20music%20lesson%20video%20thumbnail&image_size=landscape_4_3' },
-                { title: '小星星尤克里里', duration: '8:30', thumbnail: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=children%20music%20song%20video%20thumbnail&image_size=landscape_4_3' }
+                { id: 4, title: '尤克里里入门教程', duration: '12:45', thumbnail: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=ukulele%20music%20lesson%20video%20thumbnail&image_size=landscape_4_3' },
+                { id: 5, title: '小星星尤克里里', duration: '8:30', thumbnail: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=children%20music%20song%20video%20thumbnail&image_size=landscape_4_3' }
             ]
         },
         {
@@ -31,9 +56,9 @@ document.addEventListener('DOMContentLoaded', function() {
             instruments: ['葫芦丝', '巴乌'],
             bio: '国家二级演奏员，从事民族乐器教学20年。教学经验丰富，曾培养多名学员获得全国比赛奖项。',
             videos: [
-                { title: '葫芦丝基础教学', duration: '25:00', thumbnail: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=hulusi%20chinese%20instrument%20lesson%20thumbnail&image_size=landscape_4_3' },
-                { title: '月光下的凤尾竹', duration: '18:20', thumbnail: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=classical%20chinese%20music%20performance%20thumbnail&image_size=landscape_4_3' },
-                { title: '葫芦丝演奏技巧', duration: '22:10', thumbnail: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20music%20tutorial%20advanced%20thumbnail&image_size=landscape_4_3' }
+                { id: 6, title: '葫芦丝基础教学', duration: '25:00', thumbnail: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=hulusi%20chinese%20instrument%20lesson%20thumbnail&image_size=landscape_4_3' },
+                { id: 7, title: '月光下的凤尾竹', duration: '18:20', thumbnail: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=classical%20chinese%20music%20performance%20thumbnail&image_size=landscape_4_3' },
+                { id: 8, title: '葫芦丝演奏技巧', duration: '22:10', thumbnail: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=professional%20music%20tutorial%20advanced%20thumbnail&image_size=landscape_4_3' }
             ]
         },
         {
@@ -43,8 +68,8 @@ document.addEventListener('DOMContentLoaded', function() {
             instruments: ['手碟', '拇指琴'],
             bio: '专注于新兴小众乐器的探索与教学，曾赴海外学习手碟演奏。教学理念创新，注重培养学员的创造力。',
             videos: [
-                { title: '手碟入门基础', duration: '30:00', thumbnail: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=handpan%20instrument%20lesson%20video%20thumbnail&image_size=landscape_4_3' },
-                { title: '手碟即兴演奏', duration: '15:45', thumbnail: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=music%20improvisation%20performance%20thumbnail&image_size=landscape_4_3' }
+                { id: 9, title: '手碟入门基础', duration: '30:00', thumbnail: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=handpan%20instrument%20lesson%20video%20thumbnail&image_size=landscape_4_3' },
+                { id: 10, title: '手碟即兴演奏', duration: '15:45', thumbnail: 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=music%20improvisation%20performance%20thumbnail&image_size=landscape_4_3' }
             ]
         }
     ];
@@ -134,7 +159,7 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             id: 1,
             instrument: '陶笛',
-            icon: '🎵',
+            icon: '<i class="fas fa-music"></i>',
             name: '30天陶笛入门打卡',
             totalDays: 30,
             completedDays: 12,
@@ -144,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             id: 2,
             instrument: '尤克里里',
-            icon: '🎸',
+            icon: '<i class="fas fa-guitar"></i>',
             name: '21天尤克里里练习',
             totalDays: 21,
             completedDays: 21,
@@ -154,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             id: 3,
             instrument: '葫芦丝',
-            icon: '🎶',
+            icon: '<i class="fas fa-wind"></i>',
             name: '14天葫芦丝基础',
             totalDays: 14,
             completedDays: 5,
@@ -164,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             id: 4,
             instrument: '拇指琴',
-            icon: '🎹',
+            icon: '<i class="fas fa-keyboard"></i>',
             name: '7天拇指琴入门',
             totalDays: 7,
             completedDays: 3,
@@ -245,6 +270,28 @@ document.addEventListener('DOMContentLoaded', function() {
     const instrumentTabs = document.getElementById('instrument-tabs');
     const checkinPlansContainer = document.getElementById('checkin-plans');
 
+    // 打开视频播放弹窗
+    function openVideoModal(video) {
+        const modal = document.getElementById('video-modal');
+        const modalVideoTitle = document.getElementById('modal-video-title');
+        const placeholderVideoTitle = document.getElementById('placeholder-video-title');
+
+        modalVideoTitle.textContent = video.title;
+        placeholderVideoTitle.textContent = video.title;
+
+        // 显示视频占位符（实际项目中可以设置真实的视频源）
+        const videoPlayer = document.getElementById('video-player');
+        const videoPlaceholder = document.querySelector('.video-placeholder');
+        
+        // 演示模式：显示占位符
+        if (videoPlayer && videoPlaceholder) {
+            videoPlayer.style.display = 'none';
+            videoPlaceholder.style.display = 'flex';
+        }
+
+        modal.classList.add('active');
+    }
+
     // 页面切换函数
     function switchPage(pageName) {
         currentPage = pageName;
@@ -305,7 +352,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     ${teacher.videos.map(video => `
                         <div style="position: relative;">
                             <img src="${video.thumbnail}" alt="${video.title}" class="video-thumbnail">
-                            <span class="play-icon">▶</span>
+                            <span class="play-icon"><i class="fas fa-play"></i></span>
                         </div>
                     `).join('')}
                 </div>
@@ -349,10 +396,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="modal-section-title">教学视频</div>
                 <div class="modal-videos">
                     ${teacher.videos.map(video => `
-                        <div class="modal-video-item">
+                        <div class="modal-video-item" data-video-id="${video.id}">
                             <div style="position: relative;">
                                 <img src="${video.thumbnail}" alt="${video.title}" class="modal-video-thumbnail">
-                                <span class="play-icon">▶</span>
+                                <span class="play-icon"><i class="fas fa-play"></i></span>
                             </div>
                             <div class="modal-video-info">
                                 <div class="modal-video-title">${video.title}</div>
@@ -363,6 +410,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>
         `;
+
+        // 添加视频点击事件
+        modalBody.querySelectorAll('.modal-video-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const videoId = parseInt(item.dataset.videoId);
+                // 找到对应的视频对象
+                let selectedVideo = null;
+                for (let i = 0; i < teachers.length; i++) {
+                    const found = teachers[i].videos.find(v => v.id === videoId);
+                    if (found) {
+                        selectedVideo = found;
+                        break;
+                    }
+                }
+                if (selectedVideo) {
+                    openVideoModal(selectedVideo);
+                }
+            });
+        });
 
         modal.classList.add('active');
     }
@@ -412,7 +479,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <span class="course-instrument">${course.instrument}</span>
                     </div>
                     <div class="course-details">
-                        <span class="course-time">⏰ ${course.time}</span>
+                        <span class="course-time"><i class="far fa-clock"></i> ${course.time}</span>
                         <span class="course-price">¥${course.price}</span>
                     </div>
                     <div class="course-participants">
@@ -465,7 +532,7 @@ document.addEventListener('DOMContentLoaded', function() {
             course.enrolled = true;
             course.currentParticipants++;
             renderCoursesList();
-            alert('报名成功！');
+            showToast('报名成功！', 'success');
         }
     }
 
@@ -473,13 +540,68 @@ document.addEventListener('DOMContentLoaded', function() {
     function cancelEnrollment(courseId) {
         const course = courses.find(c => c.id === courseId);
         if (course && course.enrolled) {
-            if (confirm('确定要取消报名吗？')) {
-                course.enrolled = false;
-                course.currentParticipants--;
-                renderCoursesList();
-                alert('已取消报名');
-            }
+            // 自定义确认对话框
+            showConfirmModal('确定要取消报名吗？', (confirmed) => {
+                if (confirmed) {
+                    course.enrolled = false;
+                    course.currentParticipants--;
+                    renderCoursesList();
+                    showToast('已取消报名', 'info');
+                }
+            });
         }
+    }
+
+    // 自定义确认对话框
+    function showConfirmModal(message, callback) {
+        // 创建确认弹窗
+        let confirmModal = document.getElementById('confirm-modal');
+        if (!confirmModal) {
+            confirmModal = document.createElement('div');
+            confirmModal.id = 'confirm-modal';
+            confirmModal.className = 'modal';
+            confirmModal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-body" style="padding: 30px 20px; text-align: center;">
+                        <div style="margin-bottom: 20px; font-size: 15px; color: #333;">${message}</div>
+                        <div style="display: flex; gap: 12px;">
+                            <button class="primary-btn cancel-btn" style="flex: 1;" id="confirm-cancel">取消</button>
+                            <button class="primary-btn enroll-btn" style="flex: 1;" id="confirm-ok">确定</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(confirmModal);
+        }
+
+        confirmModal.classList.add('active');
+
+        const cancelBtn = confirmModal.querySelector('#confirm-cancel');
+        const okBtn = confirmModal.querySelector('#confirm-ok');
+
+        // 清除旧的事件监听器
+        const newCancelBtn = cancelBtn.cloneNode(true);
+        const newOkBtn = okBtn.cloneNode(true);
+        cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+        okBtn.parentNode.replaceChild(newOkBtn, okBtn);
+
+        newCancelBtn.addEventListener('click', () => {
+            confirmModal.classList.remove('active');
+            if (callback) callback(false);
+        });
+
+        newOkBtn.addEventListener('click', () => {
+            confirmModal.classList.remove('active');
+            if (callback) callback(true);
+        });
+
+        // 点击外部关闭
+        confirmModal.addEventListener('click', (e) => {
+            if (e.target === confirmModal) {
+                confirmModal.classList.remove('active');
+                if (callback) callback(false);
+            }
+        });
     }
 
     // 渲染乐器分类标签
@@ -600,7 +722,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 <div class="checkin-info-item">
                     <div class="checkin-info-label">完成率</div>
-                    <div class="checkin-info-value">${Math.round((plan.completedDays / plan.totalDays) * 100)}%</div>
+                    <div class="checkin-info-value">${Math.round((plan.completedDays / plan.totalDays) * 100}%</div>
                 </div>
                 <div class="checkin-info-item">
                     <div class="checkin-info-label">提醒时间</div>
@@ -652,7 +774,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (plan && !plan.todayCompleted) {
             plan.todayCompleted = true;
             plan.completedDays++;
-            alert('打卡成功！继续加油！');
+            showToast('打卡成功！继续加油！', 'success');
             renderCheckinPlans();
             document.getElementById('checkin-modal').classList.remove('active');
         }
@@ -705,7 +827,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function downloadSheet(sheetId) {
         const sheet = sheetMusic.find(s => s.id === sheetId);
         if (sheet) {
-            alert(`正在下载: ${sheet.name}\n\n（这是演示，实际项目中会下载真实的PDF文件）`);
+            showToast(`正在下载: ${sheet.name}`, 'info');
         }
     }
 
@@ -726,8 +848,9 @@ document.addEventListener('DOMContentLoaded', function() {
             userInfo.username = newUsername;
             updateUserInfo();
             document.getElementById('edit-username-modal').classList.remove('active');
+            showToast('用户名修改成功！', 'success');
         } else {
-            alert('用户名不能为空');
+            showToast('用户名不能为空', 'warning');
         }
     }
 
@@ -772,6 +895,11 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('edit-username-modal').classList.remove('active');
         });
 
+        // 关闭视频弹窗
+        document.getElementById('close-video-modal').addEventListener('click', () => {
+            document.getElementById('video-modal').classList.remove('active');
+        });
+
         // 点击弹窗外部关闭
         document.querySelectorAll('.modal').forEach(modal => {
             modal.addEventListener('click', (e) => {
@@ -784,15 +912,20 @@ document.addEventListener('DOMContentLoaded', function() {
         // 我的页面菜单
         document.getElementById('menu-sheet').addEventListener('click', openSheetModal);
         document.getElementById('menu-settings').addEventListener('click', () => {
-            alert('设置功能开发中...');
+            showToast('设置功能开发中...', 'info');
         });
 
         // 编辑头像和用户名
-        document.getElementById('edit-avatar-btn').addEventListener('click', () => {
-            alert('头像编辑功能：在实际项目中会打开文件选择器上传新头像');
+        document.getElementById('edit-avatar-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            showToast('头像编辑功能：在实际项目中会打开文件选择器上传新头像', 'info');
         });
 
-        document.getElementById('edit-username-btn').addEventListener('click', openEditUsernameModal);
+        document.getElementById('edit-username-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            openEditUsernameModal();
+        });
+
         document.getElementById('save-username-btn').addEventListener('click', saveUsername);
 
         // 回车键保存用户名
@@ -800,7 +933,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (e.key === 'Enter') {
                 saveUsername();
             }
-        });
+        };
     }
 
     // 初始化应用
