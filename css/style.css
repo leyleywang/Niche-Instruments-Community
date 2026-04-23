@@ -1,0 +1,899 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f5f9f5;
+    color: #333;
+}
+
+#app {
+    max-width: 500px;
+    margin: 0 auto;
+    min-height: 100vh;
+    position: relative;
+    padding-bottom: 70px;
+}
+
+.page {
+    display: none;
+    min-height: 100vh;
+}
+
+.page.active {
+    display: block;
+}
+
+.page-header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.page-header h1 {
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.page-content {
+    padding: 16px;
+    background-color: #f5f9f5;
+    min-height: calc(100vh - 130px);
+}
+
+/* 底部导航栏 */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 500px;
+    background-color: white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px 16px;
+    color: #999;
+    transition: color 0.3s;
+}
+
+.nav-item.active {
+    color: #4CAF50;
+}
+
+.nav-icon {
+    font-size: 24px;
+    margin-bottom: 4px;
+}
+
+.nav-label {
+    font-size: 12px;
+}
+
+/* 首页样式 */
+.search-section {
+    margin-bottom: 20px;
+}
+
+#teacher-search {
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    font-size: 14px;
+    outline: none;
+}
+
+#teacher-search:focus {
+    box-shadow: 0 2px 12px rgba(76, 175, 80, 0.2);
+}
+
+.teachers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.teacher-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.teacher-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.teacher-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.teacher-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 12px;
+    object-fit: cover;
+}
+
+.teacher-info h3 {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.teacher-instruments {
+    font-size: 13px;
+    color: #4CAF50;
+}
+
+.teacher-bio {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.teacher-videos {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+}
+
+.video-thumbnail {
+    width: 120px;
+    height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+}
+
+/* 课程页面样式 */
+.day-selector {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+}
+
+.day-btn {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 20px;
+    background-color: white;
+    color: #666;
+    font-size: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.day-btn.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.courses-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.course-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.course-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.course-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.course-instrument {
+    font-size: 13px;
+    color: #4CAF50;
+    background-color: rgba(76, 175, 80, 0.1);
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.course-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.course-time {
+    font-size: 14px;
+    color: #666;
+}
+
+.course-price {
+    font-size: 16px;
+    font-weight: 600;
+    color: #FF5722;
+}
+
+.course-participants {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.participants-count {
+    font-size: 13px;
+    color: #999;
+}
+
+.progress-bar {
+    width: 60%;
+    height: 6px;
+    background-color: #e0e0e0;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: #4CAF50;
+    border-radius: 3px;
+    transition: width 0.3s;
+}
+
+.course-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.primary-btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.enroll-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.enroll-btn:hover {
+    background-color: #45a049;
+}
+
+.enroll-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.cancel-btn {
+    background-color: #f5f5f5;
+    color: #666;
+}
+
+.cancel-btn:hover {
+    background-color: #e0e0e0;
+}
+
+/* 打卡页面样式 */
+.instrument-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    background-color: white;
+    color: #666;
+    font-size: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.tab-btn.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.checkin-plans {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.checkin-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.checkin-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.checkin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.checkin-instrument {
+    display: flex;
+    align-items: center;
+}
+
+.instrument-icon {
+    font-size: 24px;
+    margin-right: 8px;
+}
+
+.instrument-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.checkin-status {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.status-completed {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: #4CAF50;
+}
+
+.status-pending {
+    background-color: rgba(255, 152, 0, 0.1);
+    color: #FF9800;
+}
+
+.checkin-details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.detail-item {
+    text-align: center;
+}
+
+.detail-label {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 4px;
+}
+
+.detail-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.checkin-progress {
+    width: 100%;
+    height: 8px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+/* 我的页面样式 */
+.user-info {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+}
+
+.avatar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 20px;
+}
+
+#user-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 8px;
+    object-fit: cover;
+    border: 3px solid #4CAF50;
+}
+
+.edit-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: #f5f5f5;
+    color: #4CAF50;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.edit-btn:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.username-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#user-username {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.menu-section {
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.menu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.menu-item:last-child {
+    border-bottom: none;
+}
+
+.menu-item:hover {
+    background-color: #f9f9f9;
+}
+
+.menu-item span:first-child {
+    font-size: 15px;
+    color: #333;
+}
+
+.arrow {
+    font-size: 18px;
+    color: #ccc;
+}
+
+/* 弹窗样式 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 200;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+    animation: modalSlideUp 0.3s ease;
+}
+
+@keyframes modalSlideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+.modal-header h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #999;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.close-btn:hover {
+    color: #333;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+/* 老师详情弹窗样式 */
+.modal-teacher-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-teacher-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 16px;
+    object-fit: cover;
+}
+
+.modal-teacher-details h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.modal-teacher-instruments {
+    font-size: 14px;
+    color: #4CAF50;
+}
+
+.modal-section {
+    margin-bottom: 20px;
+}
+
+.modal-section-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+.modal-bio {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+}
+
+.modal-videos {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.modal-video-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.modal-video-item:hover {
+    background-color: #f0f0f0;
+}
+
+.modal-video-thumbnail {
+    width: 80px;
+    height: 60px;
+    border-radius: 6px;
+    object-fit: cover;
+    margin-right: 12px;
+    position: relative;
+}
+
+.modal-video-info {
+    flex: 1;
+}
+
+.modal-video-title {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.modal-video-duration {
+    font-size: 12px;
+    color: #999;
+}
+
+/* 打卡详情弹窗样式 */
+.checkin-detail-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.checkin-detail-icon {
+    font-size: 32px;
+    margin-right: 12px;
+}
+
+.checkin-detail-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+}
+
+.checkin-detail-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.checkin-info-item {
+    background-color: #f9f9f9;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.checkin-info-label {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 4px;
+}
+
+.checkin-info-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.checkin-daily-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.checkin-daily-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.checkin-day-label {
+    font-size: 14px;
+    color: #333;
+}
+
+.checkin-day-status {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.checkin-day-status.completed {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: #4CAF50;
+}
+
+.checkin-day-status.pending {
+    background-color: rgba(255, 152, 0, 0.1);
+    color: #FF9800;
+}
+
+.checkin-action-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 16px;
+    transition: all 0.3s;
+}
+
+.checkin-action-btn.do-checkin {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.checkin-action-btn.do-checkin:hover {
+    background-color: #45a049;
+}
+
+.checkin-action-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* 乐谱列表样式 */
+.sheet-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sheet-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.sheet-info {
+    flex: 1;
+}
+
+.sheet-name {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.sheet-instrument {
+    font-size: 12px;
+    color: #4CAF50;
+}
+
+.sheet-download-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.sheet-download-btn:hover {
+    background-color: #45a049;
+}
+
+/* 编辑用户名弹窗样式 */
+#new-username-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 16px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+#new-username-input:focus {
+    border-color: #4CAF50;
+}
+
+#save-username-btn {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+}
+
+#save-username-btn:hover {
+    background-color: #45a049;
+}
+
+/* 响应式设计 */
+@media (max-width: 400px) {
+    .page-content {
+        padding: 12px;
+    }
+    
+    .teacher-card, .course-card, .checkin-card {
+        padding: 12px;
+    }
+    
+    .user-info {
+        padding: 16px;
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .avatar-container {
+        margin-right: 0;
+        margin-bottom: 16px;
+    }
+}
